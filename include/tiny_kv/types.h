@@ -27,6 +27,8 @@ namespace tiny_kv {
         Delete = 1,
     };
 
+    inline const Value kTombstoneValue(1, '\x01');  // Delete 墓碑标记
+
     constexpr const char* kWALFileName = "WAL";
 
     constexpr size_t kDefaultMemTableSize = 4 * 1024 * 1024;  // 4MB

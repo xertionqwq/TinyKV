@@ -26,6 +26,7 @@ add_library(tiny_kv STATIC
     src/sstable_builder.cpp
     src/sstable_reader.cpp
     src/thread_pool.cpp
+    src/db.cpp
 )
 
 target_include_directories(tiny_kv
@@ -42,4 +43,9 @@ option(TINY_KV_BUILD_TESTS "Build tests" ON)
 if(TINY_KV_BUILD_TESTS)
     enable_testing()
     add_subdirectory(tests)
+endif()
+
+option(TINY_KV_BUILD_BENCH "Build benchmarks" OFF)
+if(TINY_KV_BUILD_BENCH)
+    add_subdirectory(bench)
 endif()
