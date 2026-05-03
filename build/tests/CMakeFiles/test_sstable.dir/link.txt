@@ -1,1 +1,0 @@
-/usr/bin/g++  -Wall -Wextra -g -fsanitize=address -g -Wl,--dependency-file=CMakeFiles/test_sstable.dir/link.d CMakeFiles/test_sstable.dir/test_sstable.cpp.o -o test_sstable  ../libtiny_kv.a

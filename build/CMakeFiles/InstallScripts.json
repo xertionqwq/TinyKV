@@ -1,9 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"/home/xertion/Code/Tiny_KV/build/cmake_install.cmake",
-		"/home/xertion/Code/Tiny_KV/build/_deps/my_stl-build/cmake_install.cmake",
-		"/home/xertion/Code/Tiny_KV/build/tests/cmake_install.cmake"
-	],
-	"Parallel" : false
-}

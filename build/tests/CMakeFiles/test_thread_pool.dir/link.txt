@@ -1,1 +1,0 @@
-/usr/bin/g++  -Wall -Wextra -g -fsanitize=address -g -Wl,--dependency-file=CMakeFiles/test_thread_pool.dir/link.d CMakeFiles/test_thread_pool.dir/test_thread_pool.cpp.o -o test_thread_pool  ../libtiny_kv.a
