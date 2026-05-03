@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/xertion/Code/Tiny_KV/build/_deps/my_stl-subbuild/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

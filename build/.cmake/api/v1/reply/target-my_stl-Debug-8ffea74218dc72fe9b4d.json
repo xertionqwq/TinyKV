@@ -1,0 +1,41 @@
+{
+	"abstract" : true,
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_library"
+		],
+		"files" : 
+		[
+			"/home/xertion/Code/My_STL/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 17,
+				"parent" : 0
+			}
+		]
+	},
+	"codemodelVersion" : 
+	{
+		"major" : 2,
+		"minor" : 9
+	},
+	"id" : "my_stl::@a9cf193b24cfed3d7984",
+	"name" : "my_stl",
+	"paths" : 
+	{
+		"build" : "_deps/my_stl-build",
+		"source" : "/home/xertion/Code/My_STL"
+	},
+	"sources" : [],
+	"type" : "INTERFACE_LIBRARY"
+}

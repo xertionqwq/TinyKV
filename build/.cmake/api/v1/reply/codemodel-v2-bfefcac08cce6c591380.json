@@ -1,0 +1,150 @@
+{
+	"configurations" : 
+	[
+		{
+			"abstractTargets" : 
+			[
+				{
+					"directoryIndex" : 1,
+					"id" : "my_stl::@a9cf193b24cfed3d7984",
+					"jsonFile" : "target-my_stl-Debug-8ffea74218dc72fe9b4d.json",
+					"name" : "my_stl",
+					"projectIndex" : 1
+				}
+			],
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-9ad1a58d4644cf6543fa.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						3
+					]
+				},
+				{
+					"abstractTargetIndexes" : 
+					[
+						0
+					],
+					"build" : "_deps/my_stl-build",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-_deps.my_stl-build-Debug-fbc5d26d35e15200e090.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "/home/xertion/Code/My_STL"
+				},
+				{
+					"build" : "tests",
+					"jsonFile" : "directory-tests-Debug-fc22f5d5a3f9cc5eca30.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "tests",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1
+					],
+					"directoryIndexes" : 
+					[
+						0,
+						2
+					],
+					"name" : "Tiny_KV",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				},
+				{
+					"abstractTargetIndexes" : 
+					[
+						0
+					],
+					"directoryIndexes" : 
+					[
+						1
+					],
+					"name" : "My_STL",
+					"parentIndex" : 0
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 2,
+					"id" : "test_kv_store::@a44f0ac069e85531cdee",
+					"jsonFile" : "target-test_kv_store-Debug-db68283439ae9cdecd42.json",
+					"name" : "test_kv_store",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "test_sstable::@a44f0ac069e85531cdee",
+					"jsonFile" : "target-test_sstable-Debug-c7d6b7d1dbd4dc3c4b67.json",
+					"name" : "test_sstable",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "test_thread_pool::@a44f0ac069e85531cdee",
+					"jsonFile" : "target-test_thread_pool-Debug-34aadb965a9675855341.json",
+					"name" : "test_thread_pool",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "tiny_kv::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-tiny_kv-Debug-8624931d3dee294c0510.json",
+					"name" : "tiny_kv",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/xertion/Code/Tiny_KV/build",
+		"source" : "/home/xertion/Code/Tiny_KV"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 9
+	}
+}

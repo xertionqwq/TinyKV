@@ -1,0 +1,2 @@
+/usr/bin/ar qc libtiny_kv.a CMakeFiles/tiny_kv.dir/src/kv_store.cpp.o CMakeFiles/tiny_kv.dir/src/wal.cpp.o CMakeFiles/tiny_kv.dir/src/sstable_builder.cpp.o CMakeFiles/tiny_kv.dir/src/sstable_reader.cpp.o CMakeFiles/tiny_kv.dir/src/thread_pool.cpp.o
+/usr/bin/ranlib libtiny_kv.a

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Site BuildName="(empty)"
+	BuildStamp="20260502-0839-Experimental"
+	Name="(empty)"
+	Generator="ctest-4.2.0"
+	CompilerName=""
+	CompilerVersion=""
+	OSName="Linux"
+	Hostname="xertion-VMware-Virtual-Platform"
+	OSRelease="6.17.0-22-generic"
+	OSVersion="#22~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu Mar 26 15:25:54 UTC 2"
+	OSPlatform="x86_64"
+	Is64Bits="1"
+	VendorString="GenuineIntel"
+	VendorID="Intel Corporation"
+	FamilyID="6"
+	ModelID="170"
+	ModelName="Intel(R) Core(TM) Ultra 5 125H"
+	ProcessorCacheSize="18432"
+	NumberOfLogicalCPU="8"
+	NumberOfPhysicalCPU="8"
+	TotalVirtualMemory="4095"
+	TotalPhysicalMemory="7893"
+	LogicalProcessorsPerPhysical="1"
+	ProcessorClockFrequency="2995.2"
+	>
+	<Testing>
+		<StartDateTime>May 03 10:38 CST</StartDateTime>
+		<StartTestTime>1777775895</StartTestTime>
+		<TestList/>
+		<EndDateTime>May 03 10:38 CST</EndDateTime>
+		<EndTestTime>1777775895</EndTestTime>
+		<ElapsedMinutes>0</ElapsedMinutes>
+	</Testing>
+</Site>
