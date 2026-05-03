@@ -1,0 +1,56 @@
+# help
+*CLADUE.md
+
+# 编译产物
+build/
+cmake-build-*/
+*.o
+*.obj
+*.exe
+*.out
+*.app
+CMakeCache.txt
+compile_commands.json
+CMakeFiles/
+*.cmake
+
+# IDE
+.vscode/
+.vs/
+*.user
+*.suo
+*.tmp
+
+# 系统文件
+.DS_Store
+*.log# 编译产物
+build/
+cmake-build-*/
+*.o
+*.obj
+*.exe
+*.out
+*.app
+CMakeCache.txt
+compile_commands.json
+CMakeFiles/
+*.cmake
+
+# IDE
+.vscode/
+.vs/
+*.user
+*.suo
+*.tmp
+
+# 密钥
+id_rsa
+id_ed25519
+id_rsa.pub
+id_ed25519.pub
+.ssh/
+
+# 系统文件
+.DS_Store
+*.log
+
