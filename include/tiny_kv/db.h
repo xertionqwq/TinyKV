@@ -37,10 +37,10 @@ namespace tiny_kv {
 			Status LoadSSTables();		// 启动时加载 SSTable 文件，构建 sst_readers_
 			void   MaybeDumpMemTable();
 
-			std::string db_path_;		//  目录路径，包含 SSTable 文件和 WAL 文件
+			std::string db_path_ = "";		//  目录路径，包含 SSTable 文件和 WAL 文件
 
-			std::shared_ptr<KVStore> mem_;// 维持当前内存表，所有写操作先更新它
-			std::shared_ptr<KVStore> imm_;// 正在冻结的内存表，后台线程正在将它转储为 SSTable
+			std::shared_ptr<KVStore> mem_{nullptr};// 维持当前内存表，所有写操作先更新它
+			std::shared_ptr<KVStore> imm_{nullptr};// 正在冻结的内存表，后台线程正在将它转储为 SSTable
 
 			mutable std::shared_mutex mem_mtx_;
 

@@ -17,11 +17,21 @@ db.Close();
 ## 快速开始
 
 ```bash
+# 测试
 cd build && cmake .. -DTINY_KV_BUILD_TESTS=ON && make -j$(nproc)
 ./tests/test_db          # DB 测试（10 用例）
 ./tests/test_kv_store    # KVStore 测试（15 用例）
 ./tests/test_sstable     # SSTable 测试（10 用例）
 ./tests/test_thread_pool # ThreadPool 测试（5 用例）
+
+# TCP 服务端
+cd build && cmake .. -DTINY_KV_BUILD_SERVER=ON && make -j$(nproc)
+./server/server 9999 /tmp/test_db
+
+# Benchmark
+cd build && cmake .. -DTINY_KV_BUILD_BENCH=ON && make -j$(nproc)
+./bench/benchmark        # DB vs std 容器 QPS 对比
+./bench/bench_ds         # 跳表 vs 红黑树 vs 哈希表 纯数据结构对比
 ```
 
 编译选项：`-Wall -Wextra -g -fsanitize=address`。
@@ -53,6 +63,14 @@ tests/
 ├── test_thread_pool.cpp # 5 用例
 ├── test_db.cpp          # 10 用例
 └── CMakeLists.txt
+server/
+├── server.cpp           # TCP 服务端（TcpServer + 主循环 + 累积缓冲区）
+├── protocol.h           # 协议层（Command + 文本解析 + RESP 解析 + 响应格式化）
+└── CMakeLists.txt
+bench/
+├── benchmark.cpp        # DB vs std::map vs std::unordered_map QPS 对比
+├── bench_ds.cpp         # 跳表 vs 红黑树 vs 哈希表 纯数据结构对比
+└── CMakeLists.txt
 ```
 
 ## 实现进度
@@ -66,8 +84,9 @@ tests/
 | SSTableReader（磁盘文件二分查找，无锁并发读） | ✅ |
 | ThreadPool（通用线程池，Engine 异步 dump 用） | ✅ |
 | DB（协调 KVStore + WAL + SSTable，统一读写接口） | ✅ |
+| TCP 服务端（文本行协议 + RESP，累积缓冲区，粘包/半包处理） | ✅ |
+| epoll 多路复用（支持多客户端并发） | ⬜ |
 | Compaction（合并 SSTable，清理 tombstone） | ⬜ |
-| Socket 通信 + epoll | ⬜ |
 
 ## 设计决策
 
@@ -135,6 +154,37 @@ Put 路径:  WAL → mem_ (可写)
 - **Footer**（24B 固定尾）：`[index_offset, index_count, magic, version]`，读文件的唯一入口
 
 对比单文件全量扫描：三层结构将磁盘查找从 O(n) 降到 O(log n)，且每次只读 4KB。
+
+### TCP 服务端：为什么协议解析与 DB 分离
+
+```
+客户端(telnet/redis-cli) → TCP → server.cpp → protocol.h → tiny_kv::DB
+                                 网络层         协议层         存储引擎
+```
+
+三层职责：
+- **网络层**（TcpServer）：socket/bind/listen/accept/recv/send，只管字节流收发，不感知协议格式
+- **协议层**（protocol.h）：Command 结构体 + ParseText + ParseRESP + FormatResponse，首字节 `*` = RESP，字母 = 文本
+- **存储引擎**（DB）：只认 Key/Value，完全不知道网络存在
+
+换协议（RESP → 长度前缀）只需替换 protocol.h，DB 和 TcpServer 不动。
+
+### 累积缓冲区：解决 TCP 粘包/半包
+
+TCP 是字节流，不保证消息边界。累积缓冲区将收到的数据追加到 `std::string buf`，从中尽可能消费完整命令帧：
+- 文本协议：找到 `\n` 切一条
+- RESP 协议：读 `*N` 确定元素个数，逐个 `$L` 读完整内容
+
+残余片段留在 buf 里，等下次 Recv 拼上。一次收包可消费多条命令（pipeline）。
+
+### 协议支持
+
+| 协议 | 命令格式 | 响应格式 | 可用客户端 |
+|------|---------|---------|-----------|
+| 文本行 | `PUT key value\n` / `GET key\n` / `DELETE key\n` | `OK\n` / `value\n` / `NOT_FOUND\n` | telnet, nc |
+| RESP | `*3\r\n$3\r\nSET\r\n...` | `+OK\r\n` / `$L\r\n...\r\n` / `$-1\r\n` | redis-cli |
+
+`SET` 作为 `PUT` 的别名，`DEL` 作为 `DELETE` 的别名，与 redis-cli 兼容。
 
 ### SSTableReader：为什么无锁并发安全
 

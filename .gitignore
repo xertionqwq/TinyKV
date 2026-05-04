@@ -36,6 +36,7 @@ CMakeFiles/
 # IDE
 .vscode/
 .vs/
+.claude/
 CLAUDE.md
 *.user
 *.suo

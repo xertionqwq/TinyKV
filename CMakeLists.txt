@@ -49,3 +49,8 @@ option(TINY_KV_BUILD_BENCH "Build benchmarks" OFF)
 if(TINY_KV_BUILD_BENCH)
     add_subdirectory(bench)
 endif()
+
+option(TINY_KV_BUILD_SERVER "Build TCP server" OFF)
+if(TINY_KV_BUILD_SERVER)
+    add_subdirectory(server)
+endif()
