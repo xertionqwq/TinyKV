@@ -11,12 +11,8 @@ compile_commands.json
 CMakeFiles/
 *.cmake
 
-# IDE
-.vscode/
-.vs/
-*.user
-*.suo
-*.tmp
+# self
+Resume.md
 
 # 系统文件
 .DS_Store

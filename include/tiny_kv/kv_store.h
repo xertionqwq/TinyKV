@@ -27,7 +27,7 @@ namespace tiny_kv {
             bool IsEmpty() const;
             void Clear();
 
-            // 遍历：按键升序遍历所有 KV 对
+            // 遍历：按键升序遍历所有 KV 对, 并使用 F 函数回调处理 (只读)
             template <typename F>
             void ForEach(F&& callback) const {
                 table_.for_each(std::forward<F>(callback));

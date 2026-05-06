@@ -21,9 +21,9 @@ namespace tiny_kv {
             // 将当前累积的 DataBlock 写入文件，记录索引条目
             Status FlushBlock(int fd);
 
-            std::string           cur_block_;       // 当前 DataBlock 缓冲区
-            std::string           cur_last_key_;    // cur_block_ 中最大的 key
-            std::vector<IndexEntry> index_entries_; // 已刷出的 Block 索引
+            std::string           cur_block_{};       // 当前 DataBlock 缓冲区
+            std::string           cur_last_key_{};    // cur_block_ 中最大的 key
+            std::vector<IndexEntry> index_entries_{}; // 已刷出的 Block 索引
             uint64_t              file_offset_ = 0; // 当前文件写入偏移
         };
 

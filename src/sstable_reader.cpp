@@ -47,6 +47,7 @@ namespace tiny_kv {
         // 读 IndexBlock
         size_t index_size = static_cast<size_t>(file_size) - sizeof(Footer) - footer.index_offset;
         std::string index_buf(index_size, '\0');
+        // 显示指定偏移量以及起始位置, 从而实现无锁并发读取
         n = pread(fd_, index_buf.data(), index_size, static_cast<off_t>(footer.index_offset));
         if (n < 0 || static_cast<size_t>(n) != index_size) {
             close(fd_);
@@ -92,7 +93,7 @@ namespace tiny_kv {
 
         // 线性扫描 Block
         size_t off = 0;
-        Key    key;
+        Key    key{};
         while (off < it->size) {
             size_t n_consumed = 0;
             if (!DecodeDataEntry(block_buf.data() + off, it->size - off,

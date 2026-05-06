@@ -97,7 +97,7 @@ namespace tiny_kv {
     struct Footer {
         uint64_t index_offset;  // IndexBlock 在文件中的字节偏移
         uint64_t index_count;   // IndexEntry 个数
-        uint32_t magic;         // kSSTableMagic
+        uint32_t magic;         // kSSTableMagic, 避免非 sstable 文件被误读
         uint32_t version;       // kSSTableVersion
     };
 

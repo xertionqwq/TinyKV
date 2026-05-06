@@ -27,9 +27,9 @@ namespace tiny_kv {
             const std::string& Filepath() const { return filepath_; }
 
         private:
-            std::string             filepath_;
+            std::string             filepath_{};
             int                     fd_ = -1;
-            std::vector<IndexEntry> index_entries_;
+            std::vector<IndexEntry> index_entries_{};
         };
 
 }  // namespace tiny_kv

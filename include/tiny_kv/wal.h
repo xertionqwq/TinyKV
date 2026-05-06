@@ -46,9 +46,10 @@ private:
     static std::string SerializeRecord(RecordType type, const Key& key, const Value& value);
     void WriterThread();
 
-    std::string filepath_;
+    std::string filepath_{};
     int fd_ = -1;
 
+    // 线程相关
     std::thread writer_thread_;
     std::queue<std::string> write_queue_;
     std::mutex mtx_;

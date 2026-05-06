@@ -84,6 +84,7 @@ struct Result {
     bool        has_rss;
 };
 
+// QPS量化和内存增量测量，支持对比不同实现的性能差异
 template <typename F>
 static Result Measure(const char* name, int n_ops, bool with_rss, F&& fn) {
     long rss_before = with_rss ? GetVmRSS() : 0;
