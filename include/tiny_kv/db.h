@@ -26,7 +26,7 @@ namespace tiny_kv {
 			Status Open(const std::string& db_path);
 			Status Close();
 
-			Status Put(const Key& key, const Value& value);	// 写
+			Status Put(const Key& key, const Value& value);	// 写，先记录到 WAL，再写内存
 			Status Delete(const Key& key);					// 删(本质是仅追加)
 			Status Get(const Key& key, Value* value) const;	// 读->>先查 mem_ 和 imm_，再按时间顺序查 sst_readers_
 
@@ -42,14 +42,14 @@ namespace tiny_kv {
 			std::shared_ptr<KVStore> mem_{nullptr};// 维持当前内存表，所有写操作先更新它
 			std::shared_ptr<KVStore> imm_{nullptr};// 正在冻结的内存表，后台线程正在将它转储为 SSTable
 
-			mutable std::shared_mutex mem_mtx_;
+			mutable std::shared_mutex mem_mtx_; // 只管 mem_ 和 imm_, shared_mutex支持多线程持有读锁，单线程持有写锁
 
-			std::vector<std::unique_ptr<SSTableReader>> sst_readers_;
-			mutable std::mutex sst_mtx_;
+			std::vector<std::unique_ptr<SSTableReader>> sst_readers_;// 磁盘文件，按时间顺序排列（越新的越后面），读时从后往前查找
+			mutable std::mutex sst_mtx_; // 只管 sst_readers_列表
 
 			ThreadPool dump_pool_{1};
 
-			std::unique_ptr<WAL> wal_{nullptr};
+			std::unique_ptr<WAL> wal_{nullptr};// 预写日志
 			uint64_t next_sst_number_ = 0;
 			size_t   mem_approx_bytes_ = 0;
 		};

@@ -15,7 +15,7 @@ namespace tiny_kv {
 	}
 
 	Status DB::Open(const std::string& db_path) {
-		db_path_ = db_path;
+		this->db_path_ = db_path;
 
 		// 确保目录存在
 		mkdir(db_path_.c_str(), 0755);
@@ -29,10 +29,10 @@ namespace tiny_kv {
 		s = wal_->Open();
 		if (s != Status::OK) return s;
 
-		s = RecoverFromWAL();
+		s = RecoverFromWAL(); // 回放 WAL 中的记录到 memtable
 		if (s != Status::OK) return s;
 
-		if (!mem_) {
+		if (!mem_) { // 如果活跃表不存在，就创建新表
 			mem_ = std::make_shared<KVStore>();
 			mem_approx_bytes_ = 0;
 		}
@@ -46,11 +46,11 @@ namespace tiny_kv {
 	}
 
 	Status DB::Close() {
-		if (wal_) {
+		if (wal_) { // 等待 WAL 队列排空 + fsync(强制落盘)
 			wal_->Sync();
 		}
 
-		dump_pool_.Shutdown();
+		dump_pool_.Shutdown(); // 等待转储线程落盘
 
 		if (wal_) {
 			wal_->Close();
@@ -69,9 +69,9 @@ namespace tiny_kv {
 	Status DB::Put(const Key& key, const Value& value) {
 		if (key.empty()) return Status::InvalidArgument;
 
-		wal_->PutRecord(key, value);
+		wal_->PutRecord(key, value); // WAL异步写入，不阻塞
 
-		{
+		{	// 写内存表，加锁
 			std::unique_lock<std::shared_mutex> lock(mem_mtx_);
 			mem_->Put(key, value);
 			mem_approx_bytes_ += key.size() + value.size();
@@ -79,7 +79,7 @@ namespace tiny_kv {
 
 		if (mem_approx_bytes_ >= kDefaultMemTableSize) {
 			MaybeDumpMemTable();
-		}
+		} // 满了就转储到 SSTable，后台线程执行，不阻塞写操作
 
 		return Status::OK;
 	}
@@ -98,6 +98,7 @@ namespace tiny_kv {
 		return Status::OK;
 	}
 
+	// 三层查找：memtable -> immutable memtable -> SSTable
 	Status DB::Get(const Key& key, Value* value) const {
 		if (key.empty()) return Status::InvalidArgument;
 
@@ -191,18 +192,19 @@ namespace tiny_kv {
 		return Status::OK;
 	}
 
+	// 三表切换：mem -> imm -> SSTable
 	void DB::MaybeDumpMemTable() {
 		std::shared_ptr<KVStore> to_dump;
 		{
 			std::unique_lock<std::shared_mutex> lock(mem_mtx_);
-			if (mem_approx_bytes_ < kDefaultMemTableSize) return;
-			if (imm_) return;
+			if (mem_approx_bytes_ < kDefaultMemTableSize) return; // 双重检查
+			if (imm_) return;									  // 上一次转储还没完成，等待下一轮
 
 			to_dump = mem_;
 			imm_ = mem_;
 			mem_ = std::make_shared<KVStore>();
 			mem_approx_bytes_ = 0;
-		}
+		} // imm 指向旧表，mem新表上线，后台线程转储 imm，不阻塞写操作
 
 		uint64_t sst_num = next_sst_number_++;
 		std::string sst_path = SSTableFileName(db_path_, sst_num);
@@ -218,7 +220,7 @@ namespace tiny_kv {
 			}
 
 			std::unique_lock<std::shared_mutex> lock(mem_mtx_);
-			imm_.reset();
+			imm_.reset(); // 转储完成，释放 imm，旧表会被销毁
 		});
 	}
 
