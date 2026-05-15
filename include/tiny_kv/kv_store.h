@@ -1,7 +1,7 @@
 #ifndef TINY_KV_KV_STORE_H_
 #define TINY_KV_KV_STORE_H_
 
-#include <my_stl/skip_list.h>
+#include <my_stl/containers/skip_list.h>
 
 #include "types.h"
 
