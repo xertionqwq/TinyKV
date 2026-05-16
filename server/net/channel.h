@@ -1,6 +1,6 @@
 #ifndef TINY_KV_CHANNEL_H
 #define TINY_KV_CHANNEL_H
-#pragma once
+
 
 #include <sys/epoll.h>
 #include <functional>
@@ -68,14 +68,10 @@ public:
         update();
     }
 
-    // for Poller
+    // for Poller(pollpoller, not epollpoller)
     int index() { return index_; }
     void set_index(int idx) { index_ = idx; }
-    void remove() {
-        disableAll();
-        // TODO -> EventLoop
-        // loop->removeChannel(this);
-    }
+    void remove();
 
 private:
     void update(); // to matain the fds
@@ -109,14 +105,12 @@ Channel::Channel(EventLoop *loop, int fdArg) :
     events_(0), 
     revents_(0), 
     index_(-1) {}
-// TODO -> EventLoop
-// inline void Channel::update() {
-//     loop_->updateChanel(this);
-// }
+// update() and remove() defined in eventloop.h
 
 // core function
 inline void Channel::handleEvent() {
     // focus on: the order of events shouldn't be changed
+    // this means channel can handle kinds of events by order
     if (revents_ & (EPOLLIN | EPOLLPRI)) {
         if (readCallback_)
             readCallback_();
