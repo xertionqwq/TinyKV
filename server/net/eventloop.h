@@ -18,6 +18,8 @@ class EventLoop{
     ** Bind with C++17
     ** noncopyable
     */
+    EventLoop(const EventLoop &others) = delete;
+    EventLoop &operator=(const EventLoop &others) = delete;
 
 public:
     void assertInLoopThread() const {
@@ -96,6 +98,9 @@ inline void Channel::remove() {
     loop_->removeChannel(this);
 }
 
+inline void Poller::assertInLoopThread() {
+    ownerLoop_->assertInLoopThread();
+}
 };
 
 #endif // TINY_KV_EVENTLOOP_H

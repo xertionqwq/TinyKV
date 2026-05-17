@@ -6,6 +6,8 @@
 
 #include "net/eventloop.h"
 #include "net/channel.h"
+#include "net/inetAddress.h"
+#include "net/acceptor.h"
 
 using namespace tiny_kv;
 

@@ -52,10 +52,7 @@ public:
     void updateChannel(Channel *channel);
     void removeChannel(Channel *channel);
 
-    // TODO -> EventLoop
-    // void assertInLoopThread() {
-    //     ownerLoop_->assertInLoopThread();
-    // }
+    void assertInLoopThread();
 
 private:
     void fillActiveChannels(int numEvents,
