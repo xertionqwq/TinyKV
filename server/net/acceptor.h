@@ -11,6 +11,14 @@
 namespace tiny_kv{
 
 class Acceptor{
+    /*
+    ** own acceptFd, to accept new fd, pass to TcpConnection
+    ** noncopyable
+    */
+
+    Acceptor(const Acceptor &others) = delete;
+    Acceptor &operator=(const Acceptor &others) = delete;
+
 public:
     // using alias
     using NewConnectionCallback = std::function<void(int sockfd, const InetAddress &)>;

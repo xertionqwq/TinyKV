@@ -139,8 +139,11 @@ inline void Poller::updateChannel(Channel *channel) {
 
 // function to remove channels
 inline void Poller::removeChannel(Channel *channel) {
+    assertInLoopThread();
     // avoid remove twice
     assert(channels_.find(channel->fd()) != channels_.end());
+    assert(channels_[channel->fd()] == channel);
+    assert(channel->isNoneEvent());
     ::epoll_ctl(epfd_, EPOLL_CTL_DEL,
                 channel->fd(), nullptr);
     channels_.erase(channel->fd());
