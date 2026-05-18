@@ -3,6 +3,7 @@
 
 
 #include <sys/epoll.h>
+#include <cassert>
 #include <functional>
 #include <memory>
 
@@ -27,6 +28,7 @@ public:
     using EventCallBack = std::function<void()>;
 
     Channel(EventLoop *loop, int fd); // the only constructor
+    ~Channel() { assert(!eventHandling_); }
 
     void handleEvent(); // the core function, to assign tasks
     // set callback events type
@@ -67,6 +69,9 @@ public:
         events_ = kNoneEvent;
         update();
     }
+    bool isWriting() const {
+        return events_ & kWritEvent;
+    }
 
     // for Poller(pollpoller, not epollpoller)
     int index() { return index_; }
@@ -86,6 +91,7 @@ private:
     int events_;
     int revents_;
     int index_; // will be use in Poller, to check pos in Pollfds_
+    bool eventHandling_; // detect whether handling events
 
     // EventCallBack functions
     EventCallBack readCallback_;
@@ -109,6 +115,7 @@ Channel::Channel(EventLoop *loop, int fdArg) :
 
 // core function
 inline void Channel::handleEvent() {
+    eventHandling_ = true;
     // focus on: the order of events shouldn't be changed
     // this means channel can handle kinds of events by order
     if (revents_ & (EPOLLIN | EPOLLPRI)) {
@@ -127,8 +134,8 @@ inline void Channel::handleEvent() {
         if (errorCallback_)
             errorCallback_();
     } // something error
+    eventHandling_ = false;
 }
-
 };
 
 #endif //TINY_KV_CHANNEL_H

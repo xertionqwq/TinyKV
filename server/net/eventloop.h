@@ -25,6 +25,9 @@ public:
     void assertInLoopThread() const {
         assert(threadId_ == std::this_thread::get_id());
     }
+    bool isInLoopTread() const {
+        return threadId_ == std::this_thread::get_id();
+    }
 
     EventLoop();
     EventLoop(int);
