@@ -1,4 +1,7 @@
 add_executable(server server.cpp)
 add_executable(epoll_server epoll_server.cpp)
+add_executable(r_server r_server.cpp)
 target_include_directories(server PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(r_server PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(server PRIVATE tiny_kv)
+target_link_libraries(r_server PRIVATE tiny_kv)

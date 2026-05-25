@@ -55,11 +55,13 @@ inline Acceptor::Acceptor(EventLoop *loop, const InetAddress &listenAddr) :
 
     int ret = ::bind(acceptFd_, (sockaddr*)&(listenAddr.addr()), sizeof(listenAddr.addr()));
     if (ret == -1) {
-        std::cerr << "Acceptor bind" << std::endl;
+        std::cerr << "Acceptor bind failed: " << strerror(errno) << std::endl;
+        assert(false);
     }
     ret = ::listen(acceptFd_, 128);
     if (ret == -1) {
-        std::cerr << "Acceptor listen" << std::endl;
+        std::cerr << "Acceptor listen failed: " << strerror(errno) << std::endl;
+        assert(false);
     }
     fcntl(acceptFd_, F_SETFL, O_NONBLOCK);
 

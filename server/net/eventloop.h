@@ -97,8 +97,7 @@ inline void Channel::update() {
     loop_->updateChannel(this);
 }
 inline void Channel::remove() {
-    disableAll();
-    loop_->removeChannel(this);
+    disableAll();  // update() 内调 Poller::updateChannel → isNoneEvent → removeChannel
 }
 
 inline void Poller::assertInLoopThread() {

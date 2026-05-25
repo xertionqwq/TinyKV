@@ -36,7 +36,10 @@ public:
         channel_->setErrorCallback([this]()
                                    { handleError(); });
     }
-    ~TcpConnection() { close(fd_); }
+    ~TcpConnection() {
+        channel_->remove();
+        close(fd_);
+    }
 
     // the setter
     void setConnectionCallback(ConnectionCallback cb) {
