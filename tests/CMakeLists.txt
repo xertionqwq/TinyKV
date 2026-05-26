@@ -9,4 +9,4 @@ add_tiny_kv_test(test_kv_store)
 add_tiny_kv_test(test_sstable)
 add_tiny_kv_test(test_thread_pool)
 add_tiny_kv_test(test_db)
-add_tiny_kv_test(test_net)
+# test_net moved to netlib

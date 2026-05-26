@@ -5,9 +5,9 @@
 #include <fcntl.h>
 #include <cstring>
 
-#include "net/eventloop.h"
-#include "net/tcpConnection.h"
-#include "net/acceptor.h"
+#include "netlib/eventloop.h"
+#include "netlib/tcpConnection.h"
+#include "netlib/acceptor.h"
 
 #include "tiny_kv/db.h"
 
@@ -15,6 +15,7 @@
 
 void test(uint16_t port, const std::string &filePath) {
     using namespace tiny_kv;
+    using namespace netlib;
     DB db;
     db.Open(filePath);
 

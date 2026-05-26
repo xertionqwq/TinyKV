@@ -39,6 +39,9 @@ target_link_libraries(tiny_kv
         my_stl
 )
 
+# 自研网络库（header-only）
+add_subdirectory(/home/xertion/Code/netlib ${CMAKE_BINARY_DIR}/netlib)
+
 option(TINY_KV_BUILD_TESTS "Build tests" ON)
 if(TINY_KV_BUILD_TESTS)
     enable_testing()
